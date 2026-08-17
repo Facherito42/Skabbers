@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SKABBERS — Construida para la calle</title>
+<meta name="description" content="SKABBERS. Piezas oversized, telas pesadas y detalles que se notan de cerca. Stock limitado, sin reposición.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow+Condensed:wght@500;600;700&family=Archivo:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="nav" id="siteNav">
+  <div class="nav-inner">
+    <a href="#top" class="logo">SKABBERS</a>
+    <nav class="nav-links" id="navLinks" aria-label="Navegación principal">
+      <a href="#tienda">Nueva colección</a>
+      <a href="#catalogo">Tienda</a>
+      <a href="#nosotros">Nosotros</a>
+    </nav>
+    <div class="nav-actions">
+      <span class="nav-tag">SS26</span>
+      <button class="icon-btn" aria-label="Buscar" id="searchBtn"><i class="ph-bold ph-magnifying-glass"></i></button>
+      <button class="icon-btn cart-btn" aria-label="Carrito" id="cartBtn"><i class="ph-bold ph-shopping-bag"></i><span class="cart-count" id="cartCount">0</span></button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="search-panel" id="searchPanel">
+    <div class="search-panel-inner">
+      <i class="ph-bold ph-magnifying-glass"></i>
+      <input type="search" placeholder="BUSCAR PRENDAS" aria-label="Buscar prendas">
+      <button class="icon-btn" aria-label="Cerrar búsqueda" id="closeSearch"><i class="ph-bold ph-x"></i></button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-media placeholder-media" aria-hidden="true">
+    <!-- <img src="hero-urban.jpg" alt="Fotografía urbana nocturna, modelo SKABBERS"> -->
+    <span class="media-tag">Fotografía urbana, 16:9</span>
+  </div>
+  <div class="hero-grid-lines" aria-hidden="true"></div>
+  <div class="hero-meta">
+    <span>DROP 01</span>
+    <span>SS26</span>
+  </div>
+  <div class="hero-content">
+    <h1 class="hero-headline">Construida<br>para la calle.</h1>
+    <p class="hero-sub">Piezas oversized, telas pesadas y detalles que se notan de cerca. Stock limitado, sin reposición.</p>
+    <div class="hero-ctas">
+      <a href="#catalogo" class="btn btn-primary">Ver colección</a>
+      <a href="#tienda" class="btn btn-ghost">Explorar prendas</a>
+    </div>
+  </div>
+</section>
+
+<section class="featured" id="tienda">
+  <div class="section-head">
+    <h2>La colección</h2>
+    <span class="section-count" id="featuredCount">06 PIEZAS</span>
+  </div>
+  <div class="product-grid" id="featuredGrid"></div>
+</section>
+
+<section class="statement" id="nosotros">
+  <div class="statement-inner">
+    <p class="statement-code">SKABBERS / MFG</p>
+    <p class="statement-lede">No hacemos ropa de temporada. Hacemos ropa que se queda puesta.</p>
+    <p class="statement-body">Algodón de gramaje alto, cortes oversized y acabados hechos a mano, prenda por prenda. Cada dobladillo deshilachado es intencional. Sin atajos, sin relleno.</p>
+  </div>
+</section>
+
+<section class="editorial">
+  <div class="editorial-media placeholder-media" aria-hidden="true">
+    <!-- <img src="editorial-urban.jpg" alt="Imagen editorial urbana SKABBERS"> -->
+    <span class="media-tag">Imagen editorial, 16:9</span>
+  </div>
+  <div class="editorial-content">
+    <span class="editorial-code">02 / CONSTRUCCIÓN</span>
+    <h2>Peso real, corte real.</h2>
+    <p>Costuras reforzadas y bordados tonales. Nada de esto se ve en una foto de producto. Se siente al ponértela.</p>
+    <a href="#catalogo" class="btn btn-primary">Descubrir la colección</a>
+  </div>
+</section>
+
+<section class="arrivals" id="catalogo">
+  <div class="section-head">
+    <h2>Recién llegado</h2>
+    <span class="section-count" id="arrivalsCount">04 PIEZAS</span>
+  </div>
+  <div class="product-grid product-grid--dense" id="arrivalsGrid"></div>
+</section>
+
+<section class="final-cta">
+  <div class="final-cta-media placeholder-media" aria-hidden="true"></div>
+  <div class="final-cta-content">
+    <h2>Se agota rápido.<br>Vestila ya.</h2>
+    <a href="#catalogo" class="btn btn-primary btn-lg">Comprar ahora</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#top" class="logo">SKABBERS</a>
+      <p>Piezas oversized, telas pesadas, cortes urbanos. Buenos Aires.</p>
+      <div class="social-links">
+        <a href="#" aria-label="Instagram"><i class="ph-bold ph-instagram-logo"></i></a>
+        <a href="#" aria-label="TikTok"><i class="ph-bold ph-tiktok-logo"></i></a>
+        <a href="#" aria-label="X"><i class="ph-bold ph-x-logo"></i></a>
+      </div>
+    </div>
+    <nav class="footer-col" aria-label="Tienda">
+      <h3>Tienda</h3>
+      <a href="#catalogo">Nueva colección</a>
+      <a href="#catalogo">Hoodies</a>
+      <a href="#catalogo">Denim</a>
+      <a href="#catalogo">Abrigos</a>
+    </nav>
+    <nav class="footer-col" aria-label="Ayuda">
+      <h3>Ayuda</h3>
+      <a href="#">Envíos y devoluciones</a>
+      <a href="#">Guía de talles</a>
+      <a href="#">Contacto</a>
+      <a href="#">Preguntas frecuentes</a>
+    </nav>
+    <div class="footer-col footer-newsletter">
+      <h3>Novedades</h3>
+      <p>Drops, restocks y nada más.</p>
+      <form class="newsletter-form" id="newsletterForm">
+        <label for="newsletterEmail" class="sr-only">Correo electrónico</label>
+        <input type="email" id="newsletterEmail" placeholder="TU CORREO" required>
+        <button type="submit" aria-label="Suscribirse"><i class="ph-bold ph-arrow-right"></i></button>
+      </form>
+      <p class="form-note" id="newsletterNote" role="status"></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 SKABBERS MFG.</p>
+    <div class="footer-legal">
+      <a href="#">Privacidad</a>
+      <a href="#">Términos</a>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
