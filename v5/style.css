@@ -77,6 +77,7 @@ input{font-family:inherit;}
 /* ---------- Hero ---------- */
 .hero{position:relative; min-height:100dvh; display:flex; align-items:center; justify-content:center; overflow:hidden;}
 .hero-media{position:absolute; inset:0; z-index:0;}
+.hero-media img{width:100%; height:100%; object-fit:cover; display:block;}
 .hero-grid-overlay{position:absolute; inset:0; z-index:0; pointer-events:none; background-image:linear-gradient(90deg, var(--line) 1px, transparent 1px), linear-gradient(0deg, var(--line) 1px, transparent 1px); background-size:calc((100% - 2*clamp(1.25rem,4vw,3.5rem)) / 12) 100%, 100% 80px;}
 .corner-tag{position:absolute; z-index:2; font-family:var(--mono); font-size:.68rem; letter-spacing:.04em; color:var(--silver); text-transform:uppercase;}
 .corner-tag--tl{top:calc(68px + 1.75rem); left:var(--gutter);}

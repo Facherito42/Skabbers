@@ -4,8 +4,8 @@
     {
       "name": "skabbers-static",
       "runtimeExecutable": "powershell.exe",
-      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ".devserver/serve.ps1", "-Port", "5500"],
-      "port": 5500
+      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ".devserver/serve.ps1", "-Port", "5522"],
+      "port": 5522
     }
   ]
 }
