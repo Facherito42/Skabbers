@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tienda — SKABBERS</title>
+<meta name="description" content="Todas las prendas SKABBERS. Cortes exactos, telas pesadas y detalles milimétricos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="nav" id="siteNav"></header>
+
+<main class="page">
+  <div class="page-head">
+    <nav class="crumbs" aria-label="Migas de pan">
+      <a href="index.html">Inicio</a><span>/</span><span aria-current="page">Tienda</span>
+    </nav>
+    <h1 id="shopTitle">Tienda</h1>
+    <p class="page-lede" id="shopLede">Todas las prendas de la colección 01.</p>
+  </div>
+
+  <div class="shop-bar">
+    <span class="shop-count" id="shopCount"></span>
+    <div class="shop-filters" id="shopFilters">
+      <a class="chip" href="tienda.html">Ver todo</a>
+      <a class="chip" href="tienda.html?ofertas=1">Ofertas</a>
+    </div>
+  </div>
+
+  <div class="product-grid" id="shopGrid"></div>
+  <p class="shop-empty" id="shopEmpty" hidden>No encontramos prendas con ese criterio. <a href="tienda.html">Ver todo</a></p>
+</main>
+
+<footer class="footer" id="siteFooter"></footer>
+
+<script src="data.js"></script>
+<script src="layout.js"></script>
+<script src="tienda.js"></script>
+</body>
+</html>

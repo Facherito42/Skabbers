@@ -1,151 +1,89 @@
-// SKABBERS — v5 Modern Digital Fashion
+// SKABBERS — v5 · Home. Nav, footer y carrito viven en layout.js; el catálogo en data.js.
 
-const PRODUCTS = [
-  {
-    id: "camisa-rayada", index: "01",
-    name: "Camisa Rayada Deshilachada",
-    price: 185,
-    badge: null,
-    colors: [
-      { name: "Negro", hex: "#1c1a17", img: "../images/products/shirt-pinstripe-black.jpg" },
-      { name: "Celeste", hex: "#c3d3e0", img: "../images/products/shirt-pinstripe-blue.jpg" },
-      { name: "Oliva", hex: "#767356", img: "../images/products/shirt-pinstripe-olive.jpg" }
-    ]
-  },
-  {
-    id: "hoodie-vintage", index: "02",
-    name: "Hoodie Skabbers Vintage",
-    price: 210,
-    badge: null,
-    colors: [{ name: "Negro", hex: "#1c1a17", img: "../images/products/hoodie-black.jpg" }]
-  },
-  {
-    id: "puffer-snake", index: "03",
-    name: "Puffer Snake",
-    price: 340,
-    badge: "Nuevo",
-    colors: [{ name: "Negro", hex: "#1c1a17", img: "../images/products/puffer-black.jpg" }]
-  },
-  {
-    id: "ziphoodie-corduroy", index: "04",
-    name: "Zip Hoodie Corduroy",
-    price: 225,
-    badge: "Nuevo",
-    colors: [
-      { name: "Sage", hex: "#a9b79f", img: "../images/products/ziphoodie-sage-main.jpg" },
-      { name: "Rosa", hex: "#dba9ae", img: "../images/products/ziphoodie-pink-main.jpg" }
-    ]
-  },
-  {
-    id: "jean-ancho", index: "05",
-    name: "Jean Ancho Deshilachado",
-    price: 195,
-    badge: null,
-    colors: [{ name: "Negro", hex: "#26262a", img: "../images/products/jeans-black-front.jpg" }]
-  },
-  {
-    id: "tee-25", index: "06",
-    name: "Camiseta Oversized 25",
-    price: 145,
-    badge: "Últimas",
-    colors: [{ name: "Negro", hex: "#1c1a17", img: "../images/products/tee-oversized-black.jpg" }]
-  }
-];
-
-function money(n){ return `$${n}`; }
-
-function renderCard(product){
-  const primary = product.colors[0];
-  const swatches = product.colors.map(c =>
-    `<span class="color-dot" style="background:${c.hex}" title="${c.name}" data-img="${c.img}"></span>`
-  ).join("");
-
+function offerCard(offer){
+  const product = findProduct(offer.id);
+  const sale = salePrice(offer.id);
   return `
-    <article class="product-card" data-id="${product.id}">
-      <div class="product-media">
-        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ""}
-        <span class="product-index">${product.index}</span>
-        <img src="${primary.img}" alt="${product.name}, color ${primary.name}, SKABBERS" loading="lazy">
-        <button class="product-quickadd" data-add="${product.id}">+ Agregar</button>
-      </div>
-      <div class="product-info">
-        <p class="product-name">${product.name}</p>
-        <div class="product-row">
-          <div class="product-colors">${swatches}</div>
-          <span class="product-price">${money(product.price)}</span>
+    <article class="offer-card">
+      <a class="offer-link" href="producto.html?id=${product.id}" aria-label="Ver ${product.name}">
+        <div class="offer-media">
+          <img src="${product.colors[0].img}" alt="" loading="lazy" decoding="async">
+          <span class="offer-off">-${offer.off}%</span>
         </div>
-      </div>
+        <div class="offer-info">
+          <p class="offer-name">${product.name}</p>
+          <p class="offer-prices">
+            <span class="offer-was">${money(product.price)}</span>
+            <span class="offer-now">${money(sale)}</span>
+          </p>
+        </div>
+      </a>
     </article>
   `;
 }
 
-function mount(){
+// El translate -50% se calcula sobre el ancho del propio track, así que si el
+// contenido cambia con la animación corriendo la posición salta. Por eso solo se
+// rellena cuando la mitad dejó de cubrir el viewport; si ya alcanza, no se toca.
+function fillHalves(track, unit, minWidth){
+  const current = track.firstElementChild;
+  if (current && current.getBoundingClientRect().width >= minWidth) return;
+
+  const half = document.createElement("div");
+  half.className = "offers-set";
+  track.innerHTML = "";
+  track.appendChild(half);
+
+  let guard = 0;
+  do {
+    half.insertAdjacentHTML("beforeend", unit);
+    guard++;
+  } while (half.getBoundingClientRect().width < minWidth && guard < 300);
+
+  // La segunda mitad es solo relleno visual: no debe duplicar links ni tab stops.
+  const clone = half.cloneNode(true);
+  clone.setAttribute("aria-hidden", "true");
+  clone.querySelectorAll("a").forEach(a => a.setAttribute("tabindex", "-1"));
+  track.appendChild(clone);
+}
+
+function initOffers(){
+  const strip = document.getElementById("offersStrip");
+  const ticker = document.getElementById("offersTicker");
+  if (!strip || !ticker) return;
+
+  const tiles = OFFERS.map(offerCard).join("");
+  const word = `<span class="offers-word">Ofertas</span><span class="offers-sep">|</span>`;
+
+  // Un margen extra sobre el viewport evita tener que rellenar de nuevo ante
+  // cambios chicos (métricas de la webfont, resize, barra de scroll).
+  const target = () => window.innerWidth * 1.35;
+
+  const build = () => {
+    fillHalves(strip, tiles, target());
+    fillHalves(ticker, word, target());
+  };
+
+  build();
+  // La tipografía llega por webfont y cambia el ancho del texto: hay que re-chequear.
+  document.fonts?.ready.then(build);
+
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(build, 200);
+  });
+}
+
+function mountGrids(){
   const featured = document.getElementById("featuredGrid");
   const arrivals = document.getElementById("arrivalsGrid");
   if (featured) featured.innerHTML = PRODUCTS.map(renderCard).join("");
   if (arrivals) arrivals.innerHTML = [PRODUCTS[2], PRODUCTS[3], PRODUCTS[4], PRODUCTS[5]].map(renderCard).join("");
-
-  document.querySelectorAll(".color-dot").forEach(dot => {
-    dot.addEventListener("click", (e) => {
-      const card = e.target.closest(".product-card");
-      const img = card.querySelector(".product-media img");
-      img.src = e.target.dataset.img;
-    });
-  });
-
-  let cartCount = 0;
-  const cartCountEl = document.getElementById("cartCount");
-  document.querySelectorAll("[data-add]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      cartCount++;
-      if (cartCountEl) cartCountEl.textContent = cartCount;
-      const original = btn.textContent;
-      btn.textContent = "Agregado";
-      setTimeout(() => { btn.textContent = original; }, 1200);
-    });
-  });
-}
-
-function initNav(){
-  const toggle = document.getElementById("menuToggle");
-  const links = document.getElementById("navLinks");
-  if (!toggle || !links) return;
-  toggle.addEventListener("click", () => {
-    const open = links.classList.toggle("open");
-    toggle.setAttribute("aria-expanded", open ? "true" : "false");
-  });
-  links.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
-    links.classList.remove("open");
-    toggle.setAttribute("aria-expanded", "false");
-  }));
-}
-
-function initSearch(){
-  const btn = document.getElementById("searchBtn");
-  const panel = document.getElementById("searchPanel");
-  const close = document.getElementById("closeSearch");
-  if (!btn || !panel) return;
-  btn.addEventListener("click", () => {
-    panel.classList.toggle("open");
-    if (panel.classList.contains("open")) panel.querySelector("input").focus();
-  });
-  close?.addEventListener("click", () => panel.classList.remove("open"));
-}
-
-function initNewsletter(){
-  const form = document.getElementById("newsletterForm");
-  const note = document.getElementById("newsletterNote");
-  if (!form) return;
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    note.textContent = "Listo. Te avisamos en el próximo lanzamiento.";
-    form.reset();
-  });
+  initColorSwatches();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  mount();
-  initNav();
-  initSearch();
-  initNewsletter();
+  mountGrids();
+  initOffers();
 });

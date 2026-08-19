@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contacto — SKABBERS</title>
+<meta name="description" content="Escribinos por consultas de pedidos, talles, cambios o prensa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="nav" id="siteNav"></header>
+
+<main class="page">
+  <div class="page-head">
+    <nav class="crumbs" aria-label="Migas de pan">
+      <a href="index.html">Inicio</a><span>/</span><span aria-current="page">Contacto</span>
+    </nav>
+    <h1>Contacto</h1>
+    <p class="page-lede">Consultas sobre pedidos, talles, cambios o prensa.</p>
+  </div>
+
+  <div class="contact-grid">
+    <div class="doc">
+      <h2>Escribinos</h2>
+      <p>Respondemos dentro de las 48 horas hábiles. Si tu consulta es sobre un pedido, incluí el número.</p>
+      <form class="contact-form" id="contactForm">
+        <label for="cName">Nombre</label>
+        <input type="text" id="cName" name="nombre" required>
+
+        <label for="cEmail">Correo electrónico</label>
+        <input type="email" id="cEmail" name="email" required>
+
+        <label for="cOrder">Número de pedido <span class="opt">(opcional)</span></label>
+        <input type="text" id="cOrder" name="pedido">
+
+        <label for="cMsg">Mensaje</label>
+        <textarea id="cMsg" name="mensaje" rows="5" required></textarea>
+
+        <button type="submit" class="btn btn-primary btn-block">Enviar consulta</button>
+        <p class="form-note" id="contactNote" role="status"></p>
+      </form>
+    </div>
+
+    <aside class="contact-side">
+      <h2>Otros canales</h2>
+      <p class="contact-channel">
+        <span class="detail-label">Instagram</span>
+        <a href="https://www.instagram.com/skabbers_clo/" target="_blank" rel="noopener noreferrer">@skabbers_clo</a>
+      </p>
+      <p class="contact-channel" id="mailChannel" hidden>
+        <span class="detail-label">Correo</span>
+        <a id="mailLink" href="#"></a>
+      </p>
+      <p class="contact-channel">
+        <span class="detail-label">Horario de atención</span>
+        <span>Lunes a viernes, 10 a 18 h</span>
+      </p>
+
+      <h2>Antes de escribir</h2>
+      <p>Puede que la respuesta ya esté en las <a href="faq.html">preguntas frecuentes</a>, en la <a href="talles.html">guía de talles</a> o en <a href="envios.html">envíos y devoluciones</a>.</p>
+    </aside>
+  </div>
+</main>
+
+<footer class="footer" id="siteFooter"></footer>
+
+<script src="data.js"></script>
+<script src="layout.js"></script>
+<script src="contacto.js"></script>
+</body>
+</html>
