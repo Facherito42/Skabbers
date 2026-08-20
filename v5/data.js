@@ -10,9 +10,9 @@ const PRODUCTS = [
     specs: ["Corte oversized", "Hombro caído", "Bajo deshilachado", "100% algodón"],
     sizes: ["S", "M", "L", "XL"],
     colors: [
-      { name: "Negro", hex: "#1c1a17", img: "images/products/shirt-pinstripe-black.jpg" },
-      { name: "Celeste", hex: "#c3d3e0", img: "images/products/shirt-pinstripe-blue.jpg" },
-      { name: "Oliva", hex: "#767356", img: "images/products/shirt-pinstripe-olive.jpg" }
+      { name: "Negro", hex: "#1c1a17", img: "images/products/shirt-pinstripe-black" },
+      { name: "Celeste", hex: "#c3d3e0", img: "images/products/shirt-pinstripe-blue" },
+      { name: "Oliva", hex: "#767356", img: "images/products/shirt-pinstripe-olive" }
     ]
   },
   {
@@ -23,7 +23,7 @@ const PRODUCTS = [
     desc: "Buzo con capucha en algodón pesado con lavado vintage y logo Skabbers bordado al frente.",
     specs: ["Algodón pesado 420g", "Lavado vintage", "Logo bordado", "Puños acanalados"],
     sizes: ["S", "M", "L", "XL"],
-    colors: [{ name: "Negro", hex: "#1c1a17", img: "images/products/hoodie-black.jpg" }]
+    colors: [{ name: "Negro", hex: "#1c1a17", img: "images/products/hoodie-black" }]
   },
   {
     id: "puffer-snake", index: "03",
@@ -33,7 +33,7 @@ const PRODUCTS = [
     desc: "Campera puffer de volumen amplio con cuello alto y bordado snake en tono sobre tono.",
     specs: ["Relleno térmico", "Cuello alto", "Bordado tono sobre tono", "Cierre metálico"],
     sizes: ["S", "M", "L", "XL"],
-    colors: [{ name: "Negro", hex: "#1c1a17", img: "images/products/puffer-black.jpg" }]
+    colors: [{ name: "Negro", hex: "#1c1a17", img: "images/products/puffer-black" }]
   },
   {
     id: "ziphoodie-corduroy", index: "04",
@@ -44,8 +44,8 @@ const PRODUCTS = [
     specs: ["Corderoy fino", "Cierre completo", "Caída estructurada", "Bolsillos laterales"],
     sizes: ["S", "M", "L", "XL"],
     colors: [
-      { name: "Sage", hex: "#a9b79f", img: "images/products/ziphoodie-sage-main.jpg" },
-      { name: "Rosa", hex: "#dba9ae", img: "images/products/ziphoodie-pink-main.jpg" }
+      { name: "Sage", hex: "#a9b79f", img: "images/products/ziphoodie-sage-main" },
+      { name: "Rosa", hex: "#dba9ae", img: "images/products/ziphoodie-pink-main" }
     ]
   },
   {
@@ -56,7 +56,7 @@ const PRODUCTS = [
     desc: "Denim de pierna ancha con lavado profundo, roturas trabajadas y bajo deshilachado.",
     specs: ["Pierna ancha", "Denim 14oz", "Roturas trabajadas", "Tiro alto"],
     sizes: ["28", "30", "32", "34", "36"],
-    colors: [{ name: "Negro", hex: "#26262a", img: "images/products/jeans-black-front.jpg" }]
+    colors: [{ name: "Negro", hex: "#26262a", img: "images/products/jeans-black-front" }]
   },
   {
     id: "tee-25", index: "06",
@@ -66,7 +66,7 @@ const PRODUCTS = [
     desc: "Remera oversized de jersey pesado con caída recta y estampa Skabbers 25 en el frente.",
     specs: ["Jersey pesado 240g", "Caída recta", "Cuello reforzado", "100% algodón"],
     sizes: ["S", "M", "L", "XL"],
-    colors: [{ name: "Negro", hex: "#1c1a17", img: "images/products/tee-oversized-black.jpg" }]
+    colors: [{ name: "Negro", hex: "#1c1a17", img: "images/products/tee-oversized-black" }]
   }
 ];
 
@@ -78,6 +78,28 @@ const OFFERS = [
   { id: "jean-ancho", off: 20 },
   { id: "tee-25", off: 35 }
 ];
+
+// Anchos generados por scripts/optimize-images.js para las fotos de producto.
+const PRODUCT_WIDTHS = [480, 640, 960];
+
+// Ancho que ocupa una card segun el breakpoint, para que el navegador no baje
+// una foto de 960px cuando la va a mostrar a 240.
+const CARD_SIZES = "(max-width: 480px) 100vw, (max-width: 1080px) 50vw, 33vw";
+
+// <picture> con AVIF y WebP por ancho, mas un unico JPG de respaldo. El <img>
+// sigue recibiendo los estilos de siempre; el <picture> solo negocia formato.
+function pictureHTML(base, opts){
+  const o = opts || {};
+  const widths = o.widths || PRODUCT_WIDTHS;
+  const sizes = o.sizes || "100vw";
+  const srcset = ext => widths.map(w => `${base}-${w}.${ext} ${w}w`).join(", ");
+
+  return `<picture>
+      <source type="image/avif" srcset="${srcset("avif")}" sizes="${sizes}">
+      <source type="image/webp" srcset="${srcset("webp")}" sizes="${sizes}">
+      <img src="${base}-fallback.jpg" alt="${o.alt || ""}" loading="${o.loading || "lazy"}" decoding="async">
+    </picture>`;
+}
 
 function money(n){ return `$${n}`; }
 
@@ -118,7 +140,7 @@ function renderCard(product){
       <div class="product-media">
         ${badge}
         <span class="product-index">${product.index}</span>
-        <img src="${primary.img}" alt="${product.name}, color ${primary.name}, SKABBERS" loading="lazy">
+        ${pictureHTML(primary.img, { alt: `${product.name}, color ${primary.name}, SKABBERS`, sizes: CARD_SIZES })}
         <a class="product-link" href="${url}" aria-label="Ver ${product.name}"></a>
         <button class="product-quickadd" data-add="${product.id}">+ Agregar</button>
       </div>
@@ -133,12 +155,16 @@ function renderCard(product){
   `;
 }
 
-// Los swatches cambian la foto de la card sin salir de la grilla.
+// Los swatches cambian la foto de la card sin salir de la grilla. Con <picture>
+// no alcanza con pisar img.src: el srcset del <source> gana, hay que reemplazar
+// el elemento entero.
 function initColorSwatches(root){
   (root || document).querySelectorAll(".color-dot").forEach(dot => {
     dot.addEventListener("click", (e) => {
       const card = e.target.closest(".product-card");
-      card.querySelector(".product-media img").src = e.target.dataset.img;
+      const picture = card.querySelector(".product-media picture");
+      const alt = picture.querySelector("img").alt;
+      picture.outerHTML = pictureHTML(e.target.dataset.img, { alt, sizes: CARD_SIZES });
     });
   });
 }

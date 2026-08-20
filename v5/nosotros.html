@@ -25,7 +25,11 @@
   </div>
 
   <div class="about-plate">
-    <img src="images/hero-magazine.jpg" alt="Retrato en blanco y negro de modelo con buzo SKABBERS">
+    <picture>
+      <source type="image/avif" sizes="(max-width: 1440px) 100vw, 1440px" srcset="images/hero-magazine-640.avif 640w, images/hero-magazine-900.avif 900w, images/hero-magazine-1280.avif 1280w, images/hero-magazine-1856.avif 1856w">
+      <source type="image/webp" sizes="(max-width: 1440px) 100vw, 1440px" srcset="images/hero-magazine-640.webp 640w, images/hero-magazine-900.webp 900w, images/hero-magazine-1280.webp 1280w, images/hero-magazine-1856.webp 1856w">
+      <img src="images/hero-magazine-fallback.jpg" alt="Retrato en blanco y negro de modelo con buzo SKABBERS" loading="lazy" decoding="async">
+    </picture>
   </div>
 
   <div class="doc">

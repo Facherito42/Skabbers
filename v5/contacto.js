@@ -1,37 +1,28 @@
 // SKABBERS — v5 · Contacto.
-// No hay backend: si hay CONTACT_EMAIL cargado el form arma un mailto, y si no
-// avisa que el canal todavía no está conectado en vez de fingir que se envió.
+// No hay backend ni casilla de correo: la atención es por DM. El form arma el
+// mensaje, lo copia al portapapeles y abre Instagram, igual que el checkout.
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (CONTACT_EMAIL){
-    const channel = document.getElementById("mailChannel");
-    const link = document.getElementById("mailLink");
-    if (channel && link){
-      channel.hidden = false;
-      link.href = `mailto:${CONTACT_EMAIL}`;
-      link.textContent = CONTACT_EMAIL;
-    }
-  }
-
   const form = document.getElementById("contactForm");
   const note = document.getElementById("contactNote");
   if (!form) return;
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    if (!CONTACT_EMAIL){
-      note.textContent = "El formulario todavía no está conectado. Escribinos por Instagram mientras tanto.";
-      return;
-    }
-
     const data = new FormData(form);
-    const asunto = data.get("pedido")
-      ? `Consulta pedido ${data.get("pedido")}`
-      : "Consulta desde la web";
-    const cuerpo = `${data.get("mensaje")}\n\n—\n${data.get("nombre")}\n${data.get("email")}`;
+    const pedido = data.get("pedido") ? `\nPedido: ${data.get("pedido")}` : "";
+    const mensaje = `¡Hola! Soy ${data.get("nombre")}.${pedido}\n\n${data.get("mensaje")}`;
 
-    location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-    note.textContent = "Abrimos tu cliente de correo con la consulta cargada.";
+    // Abrir primero: después de un await se pierde la activación de usuario y el
+    // navegador bloquea la ventana como popup.
+    window.open(SOCIAL.instagram, "_blank", "noopener");
+
+    try {
+      await navigator.clipboard.writeText(mensaje);
+      note.textContent = "Consulta copiada. Pegala en el mensaje directo.";
+    } catch {
+      note.textContent = "Abrimos Instagram. Copiá tu consulta y pegala en el chat.";
+    }
   });
 });

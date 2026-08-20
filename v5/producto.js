@@ -32,8 +32,12 @@ function productHTML(product){
     </nav>
 
     <div class="product-detail">
-      <div class="detail-media">
-        <img id="detailImg" src="${primary.img}" alt="${product.name}, color ${primary.name}, SKABBERS">
+      <div class="detail-media" id="detailMedia">
+        ${pictureHTML(primary.img, {
+          alt: `${product.name}, color ${primary.name}, SKABBERS`,
+          sizes: "(max-width: 860px) 100vw, 520px",
+          loading: "eager"
+        })}
         <span class="detail-index">${product.index}</span>
       </div>
 
@@ -84,13 +88,19 @@ function mountProduct(){
   document.title = `${product.name} — SKABBERS`;
   root.innerHTML = productHTML(product);
 
-  // Cambiar color actualiza la foto principal y la etiqueta.
+  // Cambiar color actualiza la foto principal y la etiqueta. Con <picture> hay
+  // que reemplazar el elemento: pisar img.src no gana contra el srcset.
   root.querySelector("#swatches").addEventListener("click", (e) => {
     const btn = e.target.closest(".swatch");
     if (!btn) return;
     root.querySelectorAll(".swatch").forEach(s => s.classList.remove("is-active"));
     btn.classList.add("is-active");
-    root.querySelector("#detailImg").src = btn.dataset.img;
+
+    root.querySelector("#detailMedia picture").outerHTML = pictureHTML(btn.dataset.img, {
+      alt: `${product.name}, color ${btn.dataset.name}, SKABBERS`,
+      sizes: "(max-width: 860px) 100vw, 520px",
+      loading: "eager"
+    });
     root.querySelector("#colorName").textContent = btn.dataset.name;
   });
 

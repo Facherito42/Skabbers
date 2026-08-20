@@ -1,0 +1,165 @@
+{
+  "hero-editorial": {
+    "w": 2752,
+    "h": 1536,
+    "widths": [
+      640,
+      900,
+      1280,
+      1920,
+      2752
+    ]
+  },
+  "hero-magazine": {
+    "w": 1856,
+    "h": 2304,
+    "widths": [
+      640,
+      900,
+      1280,
+      1856
+    ]
+  },
+  "hero-precision": {
+    "w": 2752,
+    "h": 1536,
+    "widths": [
+      640,
+      900,
+      1280,
+      1920,
+      2752
+    ]
+  },
+  "hero-urban": {
+    "w": 2752,
+    "h": 1536,
+    "widths": [
+      640,
+      900,
+      1280,
+      1920,
+      2752
+    ]
+  },
+  "products/hoodie-black": {
+    "w": 1402,
+    "h": 1122,
+    "widths": [
+      480,
+      640,
+      960,
+      1402
+    ]
+  },
+  "products/jeans-black-back": {
+    "w": 1086,
+    "h": 1448,
+    "widths": [
+      480,
+      640,
+      960,
+      1086
+    ]
+  },
+  "products/jeans-black-front": {
+    "w": 1122,
+    "h": 1402,
+    "widths": [
+      480,
+      640,
+      960,
+      1122
+    ]
+  },
+  "products/puffer-black": {
+    "w": 1086,
+    "h": 1448,
+    "widths": [
+      480,
+      640,
+      960,
+      1086
+    ]
+  },
+  "products/shirt-pinstripe-black": {
+    "w": 1086,
+    "h": 1448,
+    "widths": [
+      480,
+      640,
+      960,
+      1086
+    ]
+  },
+  "products/shirt-pinstripe-blue": {
+    "w": 1122,
+    "h": 1402,
+    "widths": [
+      480,
+      640,
+      960,
+      1122
+    ]
+  },
+  "products/shirt-pinstripe-olive": {
+    "w": 1122,
+    "h": 1402,
+    "widths": [
+      480,
+      640,
+      960,
+      1122
+    ]
+  },
+  "products/tee-oversized-black": {
+    "w": 1402,
+    "h": 1122,
+    "widths": [
+      480,
+      640,
+      960,
+      1402
+    ]
+  },
+  "products/ziphoodie-pink-main": {
+    "w": 1122,
+    "h": 918,
+    "widths": [
+      480,
+      640,
+      960,
+      1122
+    ]
+  },
+  "products/ziphoodie-pink": {
+    "w": 1122,
+    "h": 1402,
+    "widths": [
+      480,
+      640,
+      960,
+      1122
+    ]
+  },
+  "products/ziphoodie-sage-main": {
+    "w": 1122,
+    "h": 918,
+    "widths": [
+      480,
+      640,
+      960,
+      1122
+    ]
+  },
+  "products/ziphoodie-sage": {
+    "w": 1122,
+    "h": 1402,
+    "widths": [
+      480,
+      640,
+      960,
+      1122
+    ]
+  }
+}

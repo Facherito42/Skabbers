@@ -7,7 +7,7 @@ function offerCard(offer){
     <article class="offer-card">
       <a class="offer-link" href="producto.html?id=${product.id}" aria-label="Ver ${product.name}">
         <div class="offer-media">
-          <img src="${product.colors[0].img}" alt="" loading="lazy" decoding="async">
+          ${pictureHTML(product.colors[0].img, { sizes: "150px" })}
           <span class="offer-off">-${offer.off}%</span>
         </div>
         <div class="offer-info">

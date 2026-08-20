@@ -2,13 +2,9 @@
 // Se inyecta en todas las páginas para no duplicar el markup y que los links
 // no se desincronicen entre archivos.
 
-// ---- Completar con las URLs reales. Vacío = el link se renderiza desactivado. ----
 const SOCIAL = {
-  instagram: "https://www.instagram.com/skabbers_clo/",
-  tiktok: "",
-  x: ""
+  instagram: "https://www.instagram.com/skabbers_clo/"
 };
-const CONTACT_EMAIL = ""; // ej. "hola@skabbers.com"
 // Si algún día hay checkout propio, poner la URL acá y reemplaza al de Instagram.
 const CHECKOUT_URL = "";
 
@@ -27,7 +23,7 @@ function resolveHref(href){
 }
 
 function socialLink(url, label, icon){
-  if (!url) return `<span class="social-off" aria-label="${label} (pendiente)" title="${label}: falta la URL"><i class="ph-light ${icon}"></i></span>`;
+  if (!url) return "";
   return `<a href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${label}"><i class="ph-light ${icon}"></i></a>`;
 }
 
@@ -58,10 +54,6 @@ function navHTML(){
 }
 
 function footerHTML(){
-  const contacto = CONTACT_EMAIL
-    ? `<a href="mailto:${CONTACT_EMAIL}">Contacto</a>`
-    : `<a href="contacto.html">Contacto</a>`;
-
   return `
   <div class="footer-top">
     <div class="footer-brand">
@@ -69,8 +61,6 @@ function footerHTML(){
       <p>Piezas oversized diseñadas con precisión.</p>
       <div class="social-links">
         ${socialLink(SOCIAL.instagram, "Instagram", "ph-instagram-logo")}
-        ${socialLink(SOCIAL.tiktok, "TikTok", "ph-tiktok-logo")}
-        ${socialLink(SOCIAL.x, "X", "ph-x-logo")}
       </div>
     </div>
     <nav class="footer-col" aria-label="Tienda">
@@ -84,7 +74,7 @@ function footerHTML(){
       <h3>Ayuda</h3>
       <a href="envios.html">Envíos y devoluciones</a>
       <a href="talles.html">Guía de talles</a>
-      ${contacto}
+      <a href="contacto.html">Contacto</a>
       <a href="faq.html">Preguntas frecuentes</a>
     </nav>
     <div class="footer-col footer-newsletter">
@@ -170,7 +160,7 @@ function cartLineHTML(line, index){
   return `
     <article class="cart-line">
       <a class="cart-thumb" href="producto.html?id=${product.id}">
-        <img src="${product.colors[0].img}" alt="${product.name}" loading="lazy">
+        ${pictureHTML(product.colors[0].img, { alt: product.name, sizes: "72px" })}
       </a>
       <div class="cart-line-info">
         <a class="cart-line-name" href="producto.html?id=${product.id}">${product.name}</a>
