@@ -32,7 +32,7 @@
   <div class="contact-grid">
     <div class="doc">
       <h2>Escribinos</h2>
-      <p>Atendemos por mensaje directo en Instagram. Armá tu consulta acá y te la dejamos copiada para pegarla en el chat.</p>
+      <p>Atendemos por WhatsApp e Instagram. Armá tu consulta acá y te abrimos el chat con el mensaje listo.</p>
       <form class="contact-form" id="contactForm">
         <label for="cName">Nombre</label>
         <input type="text" id="cName" name="nombre" required>
@@ -43,13 +43,20 @@
         <label for="cMsg">Mensaje</label>
         <textarea id="cMsg" name="mensaje" rows="5" required></textarea>
 
-        <button type="submit" class="btn btn-primary btn-block"><i class="ph-light ph-instagram-logo"></i>Escribir por Instagram</button>
+        <div class="cart-actions">
+          <button type="submit" class="btn btn-primary btn-block"><i class="ph-light ph-whatsapp-logo"></i>Enviar por WhatsApp</button>
+          <button type="button" class="btn btn-ghost btn-block" id="contactIg"><i class="ph-light ph-instagram-logo"></i>Enviar por Instagram</button>
+        </div>
         <p class="form-note" id="contactNote" role="status"></p>
       </form>
     </div>
 
     <aside class="contact-side">
       <h2>Otros canales</h2>
+      <p class="contact-channel">
+        <span class="detail-label">WhatsApp</span>
+        <a href="https://wa.me/59891865906" target="_blank" rel="noopener noreferrer">+598 91 865 906</a>
+      </p>
       <p class="contact-channel">
         <span class="detail-label">Instagram</span>
         <a href="https://www.instagram.com/skabbers_clo/" target="_blank" rel="noopener noreferrer">@skabbers_clo</a>

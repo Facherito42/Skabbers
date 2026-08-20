@@ -4,6 +4,9 @@
 
 const IG_USER = "skabbers_clo";
 
+// Solo dígitos, con código de país y sin el "+": es lo que exige wa.me.
+const WA_NUMBER = "59891865906";
+
 const SOCIAL = {
   instagram: `https://www.instagram.com/${IG_USER}/`
 };
@@ -14,6 +17,12 @@ const SOCIAL = {
 // acepta es ?ref=, que solo sirve para tracking), así que el pedido se copia al
 // portapapeles y el cliente lo pega.
 const IG_DM = `https://ig.me/m/${IG_USER}`;
+
+// WhatsApp sí admite precargar el mensaje, así que acá no hace falta el
+// portapapeles: el cliente abre el chat con el pedido escrito y solo envía.
+function waLink(text){
+  return WA_NUMBER ? `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}` : "";
+}
 // Si algún día hay checkout propio, poner la URL acá y reemplaza al de Instagram.
 const CHECKOUT_URL = "";
 
@@ -70,6 +79,7 @@ function footerHTML(){
       <p>Piezas oversized diseñadas con precisión.</p>
       <div class="social-links">
         ${socialLink(SOCIAL.instagram, "Instagram", "ph-instagram-logo")}
+        ${socialLink(WA_NUMBER ? `https://wa.me/${WA_NUMBER}` : "", "WhatsApp", "ph-whatsapp-logo")}
       </div>
     </div>
     <nav class="footer-col" aria-label="Tienda">
@@ -215,9 +225,21 @@ function renderCart(){
   if (CHECKOUT_URL){
     note = "Envío e impuestos se calculan en el checkout.";
     action = `<a class="btn btn-primary btn-block" href="${CHECKOUT_URL}">Finalizar compra</a>`;
-  } else if (IG_DM){
-    note = "Te abrimos el chat con el pedido copiado: solo pegalo y enviá.";
-    action = `<button class="btn btn-primary btn-block" id="checkoutBtn"><i class="ph-light ph-instagram-logo"></i>Finalizar por Instagram</button>`;
+  } else if (WA_NUMBER || IG_DM){
+    note = WA_NUMBER
+      ? "Por WhatsApp el pedido va escrito y solo tenés que enviarlo. Por Instagram te lo copiamos para pegar."
+      : "Te abrimos el chat con el pedido copiado: solo pegalo y enviá.";
+
+    // WhatsApp va como <a>: el mensaje viaja en la URL, no necesita portapapeles
+    // ni window.open, así que ningún bloqueador de popups lo puede frenar.
+    const wa = WA_NUMBER
+      ? `<a class="btn btn-primary btn-block" href="${waLink(orderSummary())}" target="_blank" rel="noopener"><i class="ph-light ph-whatsapp-logo"></i>Pedir por WhatsApp</a>`
+      : "";
+    const ig = IG_DM
+      ? `<button class="btn ${WA_NUMBER ? "btn-ghost" : "btn-primary"} btn-block" id="checkoutBtn"><i class="ph-light ph-instagram-logo"></i>Pedir por Instagram</button>`
+      : "";
+
+    action = `<div class="cart-actions">${wa}${ig}</div>`;
   } else {
     note = "Envío e impuestos se calculan en el checkout.";
     action = `<button class="btn btn-primary btn-block" id="checkoutBtn" disabled>Checkout pendiente de conectar</button>`;
