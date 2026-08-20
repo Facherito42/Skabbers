@@ -16,10 +16,8 @@ const SOCIAL = {
 // Instagram no admite precargar el texto del mensaje (el único parámetro que
 // acepta es ?ref=, que solo sirve para tracking), así que el pedido se copia al
 // portapapeles y el cliente lo pega.
-const IG_DM = `https://ig.me/m/${IG_USER}`;
-
-// WhatsApp sí admite precargar el mensaje, así que acá no hace falta el
-// portapapeles: el cliente abre el chat con el pedido escrito y solo envía.
+// WhatsApp admite precargar el mensaje en la URL: el cliente abre el chat con el
+// pedido escrito y solo envía. Instagram no lo permite, por eso no se usa acá.
 function waLink(text){
   return WA_NUMBER ? `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}` : "";
 }
@@ -225,21 +223,11 @@ function renderCart(){
   if (CHECKOUT_URL){
     note = "Envío e impuestos se calculan en el checkout.";
     action = `<a class="btn btn-primary btn-block" href="${CHECKOUT_URL}">Finalizar compra</a>`;
-  } else if (WA_NUMBER || IG_DM){
-    note = WA_NUMBER
-      ? "Por WhatsApp el pedido va escrito y solo tenés que enviarlo. Por Instagram te lo copiamos para pegar."
-      : "Te abrimos el chat con el pedido copiado: solo pegalo y enviá.";
-
-    // WhatsApp va como <a>: el mensaje viaja en la URL, no necesita portapapeles
-    // ni window.open, así que ningún bloqueador de popups lo puede frenar.
-    const wa = WA_NUMBER
-      ? `<a class="btn btn-primary btn-block" href="${waLink(orderSummary())}" target="_blank" rel="noopener"><i class="ph-light ph-whatsapp-logo"></i>Pedir por WhatsApp</a>`
-      : "";
-    const ig = IG_DM
-      ? `<button class="btn ${WA_NUMBER ? "btn-ghost" : "btn-primary"} btn-block" id="checkoutBtn"><i class="ph-light ph-instagram-logo"></i>Pedir por Instagram</button>`
-      : "";
-
-    action = `<div class="cart-actions">${wa}${ig}</div>`;
+  } else if (WA_NUMBER){
+    note = "Te abrimos el chat con el pedido escrito: solo tenés que enviarlo.";
+    // Va como <a>: el mensaje viaja en la URL, no necesita portapapeles ni
+    // window.open, así que ningún bloqueador de popups lo puede frenar.
+    action = `<a class="btn btn-whatsapp btn-block" href="${waLink(orderSummary())}" target="_blank" rel="noopener"><i class="ph-light ph-whatsapp-logo"></i>Pedir por WhatsApp</a>`;
   } else {
     note = "Envío e impuestos se calculan en el checkout.";
     action = `<button class="btn btn-primary btn-block" id="checkoutBtn" disabled>Checkout pendiente de conectar</button>`;
@@ -267,34 +255,6 @@ function orderSummary(){
   }).filter(Boolean);
 
   return `¡Hola! Quiero hacer este pedido:\n${lines.join("\n")}\n\nTotal: ${money(totals.subtotal)}`;
-}
-
-// Dos restricciones que se pisan entre si:
-//   - El portapapeles exige que el documento este enfocado, y abrir una pestana
-//     nueva le saca el foco.
-//   - La activacion de usuario se pierde despues de un await, y sin ella el
-//     navegador bloquea window.open como popup.
-// Por eso se dispara la escritura al portapapeles primero (todavia con foco) y
-// se abre la ventana en la misma tarea del click, sin await en el medio. El
-// resultado de la copia se procesa despues.
-function copyThenOpen(text, url){
-  const copied = navigator.clipboard?.writeText
-    ? navigator.clipboard.writeText(text).then(() => true, () => false)
-    : Promise.resolve(false);
-
-  window.open(url, "_blank", "noopener");
-  return copied;
-}
-
-// Si la copia falla igual hay que poder mandar el pedido: se muestra el texto
-// seleccionable con un boton para reintentar.
-function checkoutHandoffHTML(text, copied){
-  return `
-    <p class="cart-note">${copied
-      ? "Pedido copiado. Pegalo en el mensaje directo."
-      : "No pudimos copiarlo solo. Copiá el texto y pegalo en el mensaje directo."}</p>
-    <textarea class="cart-handoff" id="handoffText" readonly rows="5">${text}</textarea>
-    <button class="btn btn-ghost btn-block" id="handoffCopy">Copiar de nuevo</button>`;
 }
 
 function openCart(){
@@ -329,29 +289,6 @@ function initCart(){
     }
     const rm = e.target.closest("[data-remove]");
     if (rm) cartSetQty(Number(rm.dataset.remove), 0);
-  });
-
-  const foot = document.getElementById("cartFoot");
-
-  foot?.addEventListener("click", (e) => {
-    if (e.target.closest("#checkoutBtn")){
-      const text = orderSummary();
-      copyThenOpen(text, IG_DM).then(copied => {
-        foot.innerHTML = checkoutHandoffHTML(text, copied);
-      });
-      return;
-    }
-
-    // Reintento manual: acá la pestaña de Instagram ya se abrió y el usuario
-    // volvió, así que el documento tiene foco y la copia sí funciona.
-    const retry = e.target.closest("#handoffCopy");
-    if (retry){
-      const field = document.getElementById("handoffText");
-      navigator.clipboard?.writeText(field.value).then(
-        () => { retry.textContent = "Copiado"; },
-        () => { field.select(); retry.textContent = "Copiá con Ctrl+C"; }
-      );
-    }
   });
 
   // Cualquier botón [data-add="id"] de cualquier página suma al carrito.
