@@ -142,7 +142,7 @@ function renderCard(product){
         <span class="product-index">${product.index}</span>
         ${pictureHTML(primary.img, { alt: `${product.name}, color ${primary.name}, SKABBERS`, sizes: CARD_SIZES })}
         <a class="product-link" href="${url}" aria-label="Ver ${product.name}"></a>
-        <button class="product-quickadd" data-add="${product.id}">+ Agregar</button>
+        <a class="product-quickadd" href="${url}" tabindex="-1">Elegir talle</a>
       </div>
       <div class="product-info">
         <a class="product-name" href="${url}">${product.name}</a>

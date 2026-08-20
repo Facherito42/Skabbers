@@ -158,6 +158,22 @@ function cartSetQty(index, qty){
   writeCart(items);
 }
 
+function cartSetSize(index, size){
+  const items = readCart();
+  const line = items[index];
+  if (!line) return;
+  line.size = size;
+
+  // Si el nuevo talle coincide con otra línea del mismo producto, se fusionan
+  // en vez de quedar duplicadas.
+  const twin = items.findIndex((l, i) => i !== index && l.id === line.id && l.size === size);
+  if (twin > -1){
+    items[twin].qty += line.qty;
+    items.splice(index, 1);
+  }
+  writeCart(items);
+}
+
 function cartTotals(){
   return readCart().reduce((acc, line) => {
     const product = findProduct(line.id);
@@ -167,6 +183,20 @@ function cartTotals(){
     acc.subtotal += unit * line.qty;
     return acc;
   }, { qty: 0, subtotal: 0 });
+}
+
+// Poder corregir el talle sin volver a la ficha: es el error mas comun al
+// armar un pedido. Las lineas viejas guardadas sin talle muestran un aviso.
+function sizePickerHTML(product, line, index){
+  if (!product.sizes?.length) return "";
+  const opts = product.sizes.map(s =>
+    `<option value="${s}"${s === line.size ? " selected" : ""}>Talle ${s}</option>`
+  ).join("");
+  const sinTalle = line.size ? "" : `<option value="" selected disabled>Elegí talle</option>`;
+
+  return `
+    <label class="sr-only" for="cartSize${index}">Talle de ${product.name}</label>
+    <select class="cart-size" id="cartSize${index}" data-size-for="${index}">${sinTalle}${opts}</select>`;
 }
 
 function cartLineHTML(line, index){
@@ -181,7 +211,7 @@ function cartLineHTML(line, index){
       </a>
       <div class="cart-line-info">
         <a class="cart-line-name" href="producto.html?id=${product.id}">${product.name}</a>
-        ${line.size ? `<p class="cart-line-meta">Talle ${line.size}</p>` : ""}
+        ${sizePickerHTML(product, line, index)}
         <p class="cart-line-price">
           ${sale ? `<span class="cart-was">${money(product.price)}</span>` : ""}
           <span>${money(unit)}</span>
@@ -289,6 +319,11 @@ function initCart(){
     }
     const rm = e.target.closest("[data-remove]");
     if (rm) cartSetQty(Number(rm.dataset.remove), 0);
+  });
+
+  document.getElementById("cartBody")?.addEventListener("change", (e) => {
+    const sel = e.target.closest("[data-size-for]");
+    if (sel) cartSetSize(Number(sel.dataset.sizeFor), sel.value);
   });
 
   // Cualquier botón [data-add="id"] de cualquier página suma al carrito.

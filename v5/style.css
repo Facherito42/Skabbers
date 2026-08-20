@@ -154,7 +154,8 @@ section{padding:clamp(4.5rem, 9vw, 7.5rem) var(--gutter);}
 .product-badge{position:absolute; top:.85rem; left:.85rem; z-index:1; font-family:var(--mono); font-size:.64rem; letter-spacing:.03em; text-transform:uppercase; background:var(--accent); color:var(--white); padding:.3rem .55rem;}
 .product-index{position:absolute; top:.85rem; right:.85rem; z-index:1; font-family:var(--mono); font-size:.64rem; color:rgba(247,247,248,.5);}
 .product-quickadd{
-  position:absolute; left:.85rem; right:.85rem; bottom:.85rem; z-index:1;
+  display:block;
+  position:absolute; left:.85rem; right:.85rem; bottom:.85rem; z-index:2;
   background:var(--white); color:var(--black); font-family:var(--display); font-weight:500;
   font-size:.82rem; letter-spacing:.01em; text-align:center; padding:.7rem;
   opacity:0; transform:translateY(8px); transition:opacity .25s ease, transform .25s ease, background .2s ease, color .2s ease;
@@ -305,7 +306,12 @@ body.no-scroll{overflow:hidden;}
 .cart-thumb img{width:100%; height:100%; object-fit:cover; object-position:top center;}
 .cart-line-name{font-size:.9rem; font-weight:500; line-height:1.35;}
 .cart-line-name:hover{color:var(--accent-soft);}
-.cart-line-meta{font-family:var(--mono); font-size:.7rem; color:var(--silver-dim); margin-top:.25rem;}
+.cart-size{margin-top:.3rem; background:var(--black); border:1px solid var(--line); color:var(--silver); font-family:var(--mono); font-size:.7rem; padding:.26rem 1.4rem .26rem .45rem; cursor:pointer; outline:none;
+  appearance:none;
+  background-image:linear-gradient(45deg, transparent 50%, var(--silver-dim) 50%), linear-gradient(135deg, var(--silver-dim) 50%, transparent 50%);
+  background-position:calc(100% - 12px) 52%, calc(100% - 7px) 52%; background-size:5px 5px; background-repeat:no-repeat;}
+.cart-size:hover, .cart-size:focus{border-color:var(--white); color:var(--white);}
+.cart-size option{background:var(--ink); color:var(--white);}
 .cart-line-price{font-family:var(--mono); font-size:.8rem; color:var(--white); margin-top:.35rem;}
 .cart-was{color:var(--silver-dim); text-decoration:line-through; margin-right:.3rem;}
 .qty{display:flex; align-items:center; gap:.5rem; margin-top:.6rem; font-family:var(--mono); font-size:.8rem;}
