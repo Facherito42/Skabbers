@@ -2,9 +2,18 @@
 // Se inyecta en todas las páginas para no duplicar el markup y que los links
 // no se desincronicen entre archivos.
 
+const IG_USER = "skabbers_clo";
+
 const SOCIAL = {
-  instagram: "https://www.instagram.com/skabbers_clo/"
+  instagram: `https://www.instagram.com/${IG_USER}/`
 };
+
+// ig.me/m abre la conversación directamente, en vez del perfil: el cliente no
+// tiene que buscar el botón "Mensaje". Es el formato oficial de Meta.
+// Instagram no admite precargar el texto del mensaje (el único parámetro que
+// acepta es ?ref=, que solo sirve para tracking), así que el pedido se copia al
+// portapapeles y el cliente lo pega.
+const IG_DM = `https://ig.me/m/${IG_USER}`;
 // Si algún día hay checkout propio, poner la URL acá y reemplaza al de Instagram.
 const CHECKOUT_URL = "";
 
@@ -206,8 +215,8 @@ function renderCart(){
   if (CHECKOUT_URL){
     note = "Envío e impuestos se calculan en el checkout.";
     action = `<a class="btn btn-primary btn-block" href="${CHECKOUT_URL}">Finalizar compra</a>`;
-  } else if (SOCIAL.instagram){
-    note = "Coordinamos pago y envío por mensaje directo. Copiamos el detalle del pedido para que lo pegues.";
+  } else if (IG_DM){
+    note = "Te abrimos el chat con el pedido copiado: solo pegalo y enviá.";
     action = `<button class="btn btn-primary btn-block" id="checkoutBtn"><i class="ph-light ph-instagram-logo"></i>Finalizar por Instagram</button>`;
   } else {
     note = "Envío e impuestos se calculan en el checkout.";
@@ -304,9 +313,8 @@ function initCart(){
 
   foot?.addEventListener("click", (e) => {
     if (e.target.closest("#checkoutBtn")){
-      if (!SOCIAL.instagram) return;
       const text = orderSummary();
-      copyThenOpen(text, SOCIAL.instagram).then(copied => {
+      copyThenOpen(text, IG_DM).then(copied => {
         foot.innerHTML = checkoutHandoffHTML(text, copied);
       });
       return;
