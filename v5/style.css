@@ -270,6 +270,8 @@ section{padding:clamp(4.5rem, 9vw, 7.5rem) var(--gutter);}
 .size:hover{border-color:var(--white); color:var(--white);}
 .size.is-active{background:var(--white); border-color:var(--white); color:var(--black);}
 .btn-block{display:flex; width:100%; margin-top:2rem;}
+.detail-actions{display:flex; flex-direction:column; gap:.6rem; margin-top:2rem;}
+.detail-actions .btn-block{margin-top:0;}
 .detail-specs{list-style:none; margin-top:2rem; border-top:1px solid var(--line);}
 .detail-specs li{padding:.75rem 0; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:.78rem; color:var(--silver);}
 .related{margin-top:clamp(4rem, 8vw, 6rem);}

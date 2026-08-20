@@ -56,7 +56,10 @@ function productHTML(product){
           <div class="sizes" id="sizes">${sizes}</div>
         </div>
 
-        <button class="btn btn-primary btn-block" id="addBtn" data-add="${product.id}" data-size="${product.sizes[0]}">+ Agregar al carrito</button>
+        <div class="detail-actions">
+          <button class="btn btn-primary btn-block" id="addBtn" data-add="${product.id}" data-size="${product.sizes[0]}">+ Agregar al carrito</button>
+          <a class="btn btn-ghost btn-block" href="tienda.html">Seguir viendo la colección</a>
+        </div>
 
         <ul class="detail-specs">
           ${product.specs.map(s => `<li>${s}</li>`).join("")}

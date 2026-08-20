@@ -305,6 +305,14 @@ function closeCart(){
 function initCart(){
   renderCart();
 
+  // Al volver con el botón atrás el navegador puede restaurar la página desde su
+  // caché sin re-ejecutar los scripts: el contador quedaría con el valor previo
+  // a lo que se agregó, y parece que el carrito se vació.
+  window.addEventListener("pageshow", (e) => { if (e.persisted) renderCart(); });
+
+  // El carrito es compartido: si se toca en otra pestaña, esta se actualiza.
+  window.addEventListener("storage", (e) => { if (e.key === CART_KEY) renderCart(); });
+
   document.getElementById("cartBtn")?.addEventListener("click", openCart);
   document.getElementById("cartClose")?.addEventListener("click", closeCart);
   document.getElementById("cartBackdrop")?.addEventListener("click", closeCart);
