@@ -238,6 +238,34 @@ function orderSummary(){
   return `¡Hola! Quiero hacer este pedido:\n${lines.join("\n")}\n\nTotal: ${money(totals.subtotal)}`;
 }
 
+// Dos restricciones que se pisan entre si:
+//   - El portapapeles exige que el documento este enfocado, y abrir una pestana
+//     nueva le saca el foco.
+//   - La activacion de usuario se pierde despues de un await, y sin ella el
+//     navegador bloquea window.open como popup.
+// Por eso se dispara la escritura al portapapeles primero (todavia con foco) y
+// se abre la ventana en la misma tarea del click, sin await en el medio. El
+// resultado de la copia se procesa despues.
+function copyThenOpen(text, url){
+  const copied = navigator.clipboard?.writeText
+    ? navigator.clipboard.writeText(text).then(() => true, () => false)
+    : Promise.resolve(false);
+
+  window.open(url, "_blank", "noopener");
+  return copied;
+}
+
+// Si la copia falla igual hay que poder mandar el pedido: se muestra el texto
+// seleccionable con un boton para reintentar.
+function checkoutHandoffHTML(text, copied){
+  return `
+    <p class="cart-note">${copied
+      ? "Pedido copiado. Pegalo en el mensaje directo."
+      : "No pudimos copiarlo solo. Copiá el texto y pegalo en el mensaje directo."}</p>
+    <textarea class="cart-handoff" id="handoffText" readonly rows="5">${text}</textarea>
+    <button class="btn btn-ghost btn-block" id="handoffCopy">Copiar de nuevo</button>`;
+}
+
 function openCart(){
   document.getElementById("cartDrawer")?.classList.add("open");
   document.getElementById("cartDrawer")?.setAttribute("aria-hidden", "false");
@@ -272,22 +300,28 @@ function initCart(){
     if (rm) cartSetQty(Number(rm.dataset.remove), 0);
   });
 
-  document.getElementById("cartFoot")?.addEventListener("click", async (e) => {
-    const btn = e.target.closest("#checkoutBtn");
-    if (!btn || !SOCIAL.instagram) return;
+  const foot = document.getElementById("cartFoot");
 
-    // Abrir primero: después de un await se pierde la activación de usuario y el
-    // navegador bloquea la ventana como popup.
-    window.open(SOCIAL.instagram, "_blank", "noopener");
-
-    // Si el portapapeles falla (permisos, contexto inseguro) el DM ya está abierto.
-    try {
-      await navigator.clipboard.writeText(orderSummary());
-      btn.textContent = "Pedido copiado — pegalo en el DM";
-    } catch {
-      btn.textContent = "Abrimos Instagram";
+  foot?.addEventListener("click", (e) => {
+    if (e.target.closest("#checkoutBtn")){
+      if (!SOCIAL.instagram) return;
+      const text = orderSummary();
+      copyThenOpen(text, SOCIAL.instagram).then(copied => {
+        foot.innerHTML = checkoutHandoffHTML(text, copied);
+      });
+      return;
     }
-    setTimeout(renderCart, 3000);
+
+    // Reintento manual: acá la pestaña de Instagram ya se abrió y el usuario
+    // volvió, así que el documento tiene foco y la copia sí funciona.
+    const retry = e.target.closest("#handoffCopy");
+    if (retry){
+      const field = document.getElementById("handoffText");
+      navigator.clipboard?.writeText(field.value).then(
+        () => { retry.textContent = "Copiado"; },
+        () => { field.select(); retry.textContent = "Copiá con Ctrl+C"; }
+      );
+    }
   });
 
   // Cualquier botón [data-add="id"] de cualquier página suma al carrito.

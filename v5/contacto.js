@@ -7,22 +7,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const note = document.getElementById("contactNote");
   if (!form) return;
 
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const data = new FormData(form);
     const pedido = data.get("pedido") ? `\nPedido: ${data.get("pedido")}` : "";
     const mensaje = `¡Hola! Soy ${data.get("nombre")}.${pedido}\n\n${data.get("mensaje")}`;
 
-    // Abrir primero: después de un await se pierde la activación de usuario y el
-    // navegador bloquea la ventana como popup.
-    window.open(SOCIAL.instagram, "_blank", "noopener");
-
-    try {
-      await navigator.clipboard.writeText(mensaje);
-      note.textContent = "Consulta copiada. Pegala en el mensaje directo.";
-    } catch {
-      note.textContent = "Abrimos Instagram. Copiá tu consulta y pegala en el chat.";
-    }
+    // copyThenOpen dispara la copia antes de abrir la pestaña: abrirla primero
+    // le saca el foco al documento y el portapapeles deja de funcionar.
+    copyThenOpen(mensaje, SOCIAL.instagram).then(copied => {
+      note.textContent = copied
+        ? "Consulta copiada. Pegala en el mensaje directo."
+        : "Copiá tu consulta del formulario y pegala en el chat.";
+    });
   });
 });
