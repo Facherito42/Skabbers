@@ -1,5 +1,5 @@
 /* SKABBERS — v5 Modern Digital Fashion
-   Near-black / white / silver-gray + cobalt accent. Precise grid, thin lines. */
+   Near-black / white / silver-gray + violet accent. Precise grid, thin lines. */
 
 :root{
   --black:#0c0d0f;
@@ -9,8 +9,11 @@
   --silver:#a8abb3;
   --silver-dim:#6c6f77;
   --line:rgba(247,247,248,.13);
-  --line-onlight:#dcdde1;
-  --accent:#3a5cff;
+  /* --accent va en rellenos (con texto blanco encima): blanco sobre el da 5.7:1.
+     Como texto sobre el fondo oscuro solo llega a 3.3:1, para eso esta la
+     variante clara, que da 6.8:1. */
+  --accent:#6d3aff;
+  --accent-soft:#a888ff;
   --max:1440px;
   --gutter:clamp(1.25rem, 4vw, 3.5rem);
   --display:'Space Grotesk', -apple-system, sans-serif;
@@ -81,16 +84,6 @@ input{font-family:inherit;}
 .btn-whatsapp:hover{background:#1faa55; border-color:#1faa55; color:var(--black);}
 .btn-whatsapp i{font-size:1.25em;}
 
-/* ---------- Placeholder media ---------- */
-.placeholder-media{
-  position:relative; overflow:hidden;
-  background:
-    radial-gradient(120% 90% at 90% 100%, rgba(58,92,255,.14), transparent 45%),
-    linear-gradient(160deg, #3a3c42 0%, #202226 42%, #0c0d0f 100%);
-}
-.placeholder-media::before{content:''; position:absolute; inset:0; background:linear-gradient(112deg, transparent 46%, rgba(247,247,248,.09) 52%, transparent 58%);}
-.media-tag{position:absolute; bottom:1.1rem; right:1.3rem; z-index:1; font-family:var(--mono); font-size:.66rem; letter-spacing:.03em; color:rgba(247,247,248,.4); text-transform:uppercase;}
-
 /* ---------- Hero ---------- */
 .hero{position:relative; min-height:100dvh; display:flex; align-items:center; justify-content:center; overflow:hidden;}
 .hero-media{position:absolute; inset:0; z-index:0;}
@@ -133,11 +126,9 @@ input{font-family:inherit;}
 .offers-ticker{position:absolute; inset:0; z-index:2; display:flex; align-items:center; overflow:hidden; pointer-events:none;}
 .offers-ticker-track{animation:offers-right 26s linear infinite;}
 .offers-word, .offers-sep{font-family:var(--display); font-weight:600; font-size:clamp(1.4rem, 3.2vw, 2.5rem); line-height:1; letter-spacing:-.01em; text-transform:uppercase; white-space:nowrap; padding-right:.42em;}
-.offers-sep{color:var(--accent); font-weight:400;}
+.offers-sep{color:var(--accent-soft); font-weight:400;}
 
-.offers-link{position:absolute; inset:0; z-index:3;}
 .offers:hover .offers-strip, .offers:hover .offers-ticker-track{animation-play-state:paused;}
-.offers-link:focus-visible{outline:2px solid var(--accent); outline-offset:-4px;}
 
 @keyframes offers-left{ from{transform:translate3d(0,0,0);} to{transform:translate3d(-50%,0,0);} }
 @keyframes offers-right{ from{transform:translate3d(-50%,0,0);} to{transform:translate3d(0,0,0);} }
@@ -192,7 +183,7 @@ section{padding:clamp(4.5rem, 9vw, 7.5rem) var(--gutter);}
 .plate-tag--tl{top:clamp(1.5rem,3vw,2.25rem); left:var(--gutter); color:var(--silver);}
 .plate-tag--br{bottom:clamp(1.5rem,3vw,2.25rem); right:var(--gutter); color:rgba(12,13,15,.5);}
 .plate-caption{position:absolute; z-index:2; left:var(--gutter); bottom:clamp(1.75rem,4vw,3rem); max-width:30ch;}
-.plate-index{font-family:var(--mono); font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; color:var(--accent);}
+.plate-index{font-family:var(--mono); font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-soft);}
 .plate-text{margin-top:.85rem; font-family:var(--display); font-weight:500; font-size:clamp(1.15rem,2.1vw,1.65rem); line-height:1.28; letter-spacing:-.01em; color:var(--white);}
 
 /* ---------- Editorial ---------- */
@@ -228,7 +219,7 @@ section{padding:clamp(4.5rem, 9vw, 7.5rem) var(--gutter);}
 .doc ul{color:var(--silver); line-height:1.8; padding-left:1.1rem; margin-bottom:1rem;}
 .doc li{margin-bottom:.35rem;}
 .doc a{color:var(--white); border-bottom:1px solid var(--line);}
-.doc a:hover{border-bottom-color:var(--accent); color:var(--accent);}
+.doc a:hover{border-bottom-color:var(--accent-soft); color:var(--accent-soft);}
 .doc-todo{font-family:var(--mono); font-size:.74rem; line-height:1.6; color:var(--silver-dim); border-left:2px solid var(--accent); padding:.65rem 0 .65rem .9rem; margin-bottom:2.25rem;}
 .doc-cta{display:flex; gap:1rem; flex-wrap:wrap; margin-top:3rem; padding-top:2.5rem; border-top:1px solid var(--line);}
 
@@ -250,12 +241,12 @@ section{padding:clamp(4.5rem, 9vw, 7.5rem) var(--gutter);}
 .chip:hover{border-color:var(--white); color:var(--white);}
 .chip.is-active{background:var(--white); border-color:var(--white); color:var(--black);}
 .shop-empty{margin-top:2.5rem; color:var(--silver);}
-.shop-empty a{color:var(--accent);}
+.shop-empty a{color:var(--accent-soft);}
 
 /* ---------- Ficha de producto ---------- */
 .product-link{position:absolute; inset:0; z-index:1;}
 .product-name{display:block;}
-.product-name:hover{color:var(--accent);}
+.product-name:hover{color:var(--accent-soft);}
 .price-was{color:var(--silver-dim); text-decoration:line-through; margin-right:.15rem;}
 
 .product-detail{display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(2rem, 4vw, 4rem); align-items:start;}
@@ -293,7 +284,7 @@ section{padding:clamp(4.5rem, 9vw, 7.5rem) var(--gutter);}
 .contact-side h2:not(:first-child){margin-top:2.5rem;}
 .contact-side p{color:var(--silver); line-height:1.75;}
 .contact-side a{color:var(--white); border-bottom:1px solid var(--line);}
-.contact-side a:hover{color:var(--accent); border-bottom-color:var(--accent);}
+.contact-side a:hover{color:var(--accent-soft); border-bottom-color:var(--accent-soft);}
 .contact-channel{display:flex; flex-direction:column; gap:.25rem; margin-bottom:1.25rem;}
 .contact-channel .detail-label{margin-bottom:0;}
 
@@ -313,7 +304,7 @@ body.no-scroll{overflow:hidden;}
 .cart-thumb{display:block; aspect-ratio:3/4; overflow:hidden; background:var(--charcoal);}
 .cart-thumb img{width:100%; height:100%; object-fit:cover; object-position:top center;}
 .cart-line-name{font-size:.9rem; font-weight:500; line-height:1.35;}
-.cart-line-name:hover{color:var(--accent);}
+.cart-line-name:hover{color:var(--accent-soft);}
 .cart-line-meta{font-family:var(--mono); font-size:.7rem; color:var(--silver-dim); margin-top:.25rem;}
 .cart-line-price{font-family:var(--mono); font-size:.8rem; color:var(--white); margin-top:.35rem;}
 .cart-was{color:var(--silver-dim); text-decoration:line-through; margin-right:.3rem;}
@@ -322,7 +313,7 @@ body.no-scroll{overflow:hidden;}
 .qty button:hover{border-color:var(--white); color:var(--white);}
 .qty span{min-width:1.5rem; text-align:center;}
 .qty-remove{width:auto !important; border:none !important; font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; color:var(--silver-dim); margin-left:.35rem;}
-.qty-remove:hover{color:var(--accent);}
+.qty-remove:hover{color:var(--accent-soft);}
 .cart-subtotal{display:flex; justify-content:space-between; align-items:baseline; font-family:var(--mono); font-size:.95rem; margin-bottom:.5rem;}
 .cart-note{font-size:.76rem; color:var(--silver-dim); margin-bottom:1.1rem;}
 .cart-count.is-empty{display:none;}
@@ -334,12 +325,12 @@ body.no-scroll{overflow:hidden;}
 .social-links{display:flex; gap:1rem; font-size:1.15rem;}
 .footer-col h3{font-family:var(--mono); text-transform:uppercase; font-size:.78rem; letter-spacing:.05em; color:var(--silver-dim); margin-bottom:1.1rem; font-weight:500;}
 .footer-col a{display:block; color:var(--white); font-size:.92rem; margin-bottom:.75rem; opacity:.85;}
-.footer-col a:hover{opacity:1; color:var(--accent);}
+.footer-col a:hover{opacity:1; color:var(--accent-soft);}
 .footer-newsletter p{color:var(--silver); font-size:.88rem; margin-bottom:1.1rem;}
 .newsletter-form{display:flex; border-bottom:1px solid var(--line); padding-bottom:.6rem;}
 .newsletter-form input{flex:1; background:none; border:none; outline:none; color:var(--white); font-family:var(--mono); font-size:.85rem; text-transform:uppercase;}
 .newsletter-form input::placeholder{color:var(--silver-dim);}
-.newsletter-form button{font-size:1.05rem; color:var(--accent);}
+.newsletter-form button{font-size:1.05rem; color:var(--accent-soft);}
 .form-note{margin-top:.7rem; font-size:.8rem; color:var(--silver); min-height:1em;}
 .footer-bottom{max-width:var(--max); margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:1.5rem 0; font-family:var(--mono); font-size:.74rem; color:var(--silver-dim);}
 .footer-meta{letter-spacing:.04em;}
